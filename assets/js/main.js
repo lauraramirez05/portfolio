@@ -116,13 +116,13 @@ let  swiper = new Swiper(".portfolio_container", {
   });
 
 /*============= SCROLL SECTIONS ACTIVE LINK =============*/
-const sections = document.querySelectorAll('section[id')
+const sections = document.querySelectorAll('section[id]')
 
 function scrollActive() {
     const scrollY = window.pageYOffset
 
     sections.forEach(current => {
-        const sectionHeight = current.offsetHeight
+        const sectionHeight = current.offsetHeight;
         const sectionTop = current.offsetTop-50;
         sectionId = current.getAttribute('id')
 
@@ -136,7 +136,7 @@ function scrollActive() {
 
 window.addEventListener('scroll', scrollActive)
 
-/*============= CHANGE BACKGROUND HEADER =============*/
+/*============= SCROLL HEADER(MENU) =============*/
 function scrollHeader() {
     const nav = document.querySelector('#header')
     //when the scroll is greater than 200vh, add the scroll header class to the header tag
@@ -145,5 +145,43 @@ function scrollHeader() {
 
 window.addEventListener('scroll', scrollHeader)
 
-  
+/*============= SHOW SCROLL UP =============*/
+function scrollUp() {
+    const scrollUp = document.querySelector('#scroll-up');
+    //When the scroll is higher than 560 viewport height, add the show-scroll class
+    if(this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
+}
+
+window.addEventListener('scroll', scrollUp)
+
+ 
+/*============= DARK LIGHT THEME =============*/
+const themeBtn = document.querySelector('#theme-btn')
+const darkTheme = 'dark-theme'
+const iconTheme = 'uil-sun'
+
+// Previous selected topic (if user selected)
+const selectedTheme = localStorage.getItem('selected-theme')
+const selectedIcon = localStorage.getItem('selected-icon')
+
+//We obtain the currrent theme that the interface has by valudating the dark-theme class
+const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
+const getCurrentIcon = () => themeBtn.classList.contains(iconTheme) ? 'uil-moon' : 'uil-sun'
+
+//We valduate if the user previously chose a theme
+if (selectedTheme) {
+    //If valudation is fulfilled, we ask what the issue was to know if we actiavyed or deactivated the dark mode
+    document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
+    themeBtn.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
+}
+
+//Activate/ deactivate the theme manually with the button 
+themeBtn.addEventListener('click', () => {
+    //add or remove the dark/ icon themme
+    document.body.classList.toggle(darkTheme)
+    themeBtn.classList.toggle(iconTheme)
+    //we save the theme and the current icon that the user chose
+    localStorage.setItem('selected-theme', getCurrentTheme())
+    localStorage.setItem('selected-icon', getCurrentIcon())
+})
 
